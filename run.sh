@@ -1,5 +1,5 @@
 #!/bin/bash
 mkdir -p bin
-javac -d bin @sources.txt
+find src -name "*.java" | xargs javac -d bin
 cp -r src/main/resources/* bin/
 java -cp bin com.legends.Main
