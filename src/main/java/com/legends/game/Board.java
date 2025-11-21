@@ -161,14 +161,14 @@ public class Board {
 
     public void printBoard(Output output) {
         // Print top border
-        output.print("  ");
+        output.print("   ");
         for (int x = 0; x < width; x++) {
             output.print("+---");
         }
         output.println("+");
 
         for (int y = 0; y < height; y++) {
-            output.print(y + " "); // Row number
+            output.print(String.format("%2d ", y)); // Row number
             for (int x = 0; x < width; x++) {
                 output.print("| ");
                 Tile tile = grid[y][x];
@@ -194,7 +194,7 @@ public class Board {
             output.println("|");
             
             // Print row separator
-            output.print("  ");
+            output.print("   ");
             for (int x = 0; x < width; x++) {
                 output.print("+---");
             }
