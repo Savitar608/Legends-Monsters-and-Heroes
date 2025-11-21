@@ -113,6 +113,33 @@ public abstract class Hero extends Entity {
         return heroClass;
     }
 
+    public void usePotion(Potion potion) {
+        String attr = potion.getAttributeAffected();
+        int amount = potion.getAttributeIncrease();
+        
+        switch (attr) {
+            case "Health":
+                this.hp += amount;
+                break;
+            case "Mana":
+                this.mana += amount;
+                break;
+            case "Strength":
+                this.strength += amount;
+                break;
+            case "Dexterity":
+                this.dexterity += amount;
+                break;
+            case "Agility":
+                this.agility += amount;
+                break;
+            default:
+                // Handle other attributes or ignore
+                break;
+        }
+        removeItem(potion);
+    }
+
     @Override
     public String toString() {
         String weaponStr = (mainHandWeapon != null ? mainHandWeapon.getName() : "None");

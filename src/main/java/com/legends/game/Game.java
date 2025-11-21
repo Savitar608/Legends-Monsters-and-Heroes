@@ -111,7 +111,7 @@ public class Game {
         while (gameRunning) {
             if (board != null) board.printBoard(output);
             
-            output.print("Enter move (W/A/S/D) or Q to quit: ");
+            output.print("Enter move (W/A/S/D), I for Info, H for Hero Menu, or Q to quit: ");
             String dir = input.readLine().toUpperCase();
 
             if (dir.equals("Q")) {
@@ -120,6 +120,8 @@ public class Game {
                 processMove(dir);
             } else if (dir.equals("I")) {
                 showInfoMenu();
+            } else if (dir.equals("H")) {
+                showHeroMenu();
             } else {
                 output.println("Invalid input.");
             }
@@ -427,6 +429,134 @@ public class Game {
         output.println("\n--- Items ---");
         for (Item i : items) {
             output.println(i.getName() + " (Cost: " + i.getCost() + ")");
+        }
+    }
+
+    private void showHeroMenu() {
+        output.println("\n--- Hero Menu ---");
+        for (int i = 0; i < party.getSize(); i++) {
+            output.println((i + 1) + ". " + party.getHero(i).getName());
+        }
+        output.println((party.getSize() + 1) + ". Back");
+        output.print("Select a hero: ");
+
+        int heroIdx = -1;
+        try {
+            String in = input.readLine();
+            heroIdx = Integer.parseInt(in) - 1;
+        } catch (NumberFormatException e) {
+            output.println("Invalid input.");
+            return;
+        }
+
+        if (heroIdx == party.getSize()) return;
+        if (heroIdx < 0 || heroIdx >= party.getSize()) {
+            output.println("Invalid selection.");
+            return;
+        }
+
+        manageHero(party.getHero(heroIdx));
+    }
+
+    private void manageHero(Hero hero) {
+        boolean managing = true;
+        while (managing) {
+            output.println("\n--- Manage " + hero.getName() + " ---");
+            output.println("1. Check Stats");
+            output.println("2. Manage Inventory");
+            output.println("3. Back");
+            output.print("Choose an option: ");
+
+            String choice = input.readLine();
+            switch (choice) {
+                case "1":
+                    showHeroStats(hero);
+                    break;
+                case "2":
+                    manageInventory(hero);
+                    break;
+                case "3":
+                    managing = false;
+                    break;
+                default:
+                    output.println("Invalid option.");
+            }
+        }
+    }
+
+    private void showHeroStats(Hero h) {
+        output.println("\n--- Stats for " + h.getName() + " ---");
+        output.println("Class: " + h.getHeroClass());
+        output.println("Level: " + h.getLevel());
+        output.println("HP: " + h.getHp());
+        output.println("Mana: " + h.getMana());
+        output.println("Strength: " + h.getStrength());
+        output.println("Agility: " + h.getAgility());
+        output.println("Dexterity: " + h.getDexterity());
+        output.println("Money: " + h.getMoney());
+        output.println("Experience: " + h.getExperience());
+        
+        Weapon main = h.getMainHandWeapon();
+        Weapon off = h.getOffHandWeapon();
+        Armor armor = h.getEquippedArmor();
+        
+        output.println("Main Hand: " + (main != null ? main.getName() : "None"));
+        output.println("Off Hand: " + (off != null ? off.getName() : "None"));
+        output.println("Armor: " + (armor != null ? armor.getName() : "None"));
+    }
+
+    private void manageInventory(Hero hero) {
+        List<Item> inv = hero.getInventory();
+        if (inv.isEmpty()) {
+            output.println("Inventory is empty.");
+            return;
+        }
+
+        output.println("\n--- Inventory ---");
+        for (int i = 0; i < inv.size(); i++) {
+            Item item = inv.get(i);
+            output.println((i + 1) + ". " + item.getName() + " (" + item.getClass().getSimpleName() + ")");
+        }
+        output.println((inv.size() + 1) + ". Back");
+        output.print("Select item to Equip/Use: ");
+
+        int itemIdx = -1;
+        try {
+            String in = input.readLine();
+            itemIdx = Integer.parseInt(in) - 1;
+        } catch (NumberFormatException e) {
+            output.println("Invalid input.");
+            return;
+        }
+
+        if (itemIdx == inv.size()) return;
+        if (itemIdx < 0 || itemIdx >= inv.size()) {
+            output.println("Invalid selection.");
+            return;
+        }
+
+        Item item = inv.get(itemIdx);
+        if (item instanceof Weapon) {
+            output.println("1. Equip Main Hand");
+            output.println("2. Equip Off Hand");
+            output.print("Choose slot: ");
+            String slot = input.readLine();
+            if (slot.equals("1")) {
+                hero.equipMainHand((Weapon) item);
+                output.println("Equipped " + item.getName() + " in Main Hand.");
+            } else if (slot.equals("2")) {
+                if (hero.equipOffHand((Weapon) item, output)) {
+                    output.println("Equipped " + item.getName() + " in Off Hand.");
+                }
+            }
+        } else if (item instanceof Armor) {
+            hero.equipArmor((Armor) item);
+            output.println("Equipped " + item.getName() + ".");
+        } else if (item instanceof Potion) {
+            hero.usePotion((Potion) item);
+            output.println("Used " + item.getName() + ".");
+        } else {
+            output.println("Cannot use this item directly.");
         }
     }
 }
