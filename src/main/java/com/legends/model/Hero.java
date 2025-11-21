@@ -29,7 +29,7 @@ public abstract class Hero extends Entity {
         this.hp = this.level * 100;
     }
 
-    // TODO: Level up logic based on experience to be added for each subclass
+    // Level up logic implemented in subclasses
     public abstract void levelUp();
 
     // Getters and Setters
