@@ -86,7 +86,7 @@ public class Game {
                     showItems();
                     break;
                 case "4":
-                    if (board != null) board.printBoard();
+                    if (board != null) board.printBoard(output);
                     else output.println("Board not initialized.");
                     break;
                 case "5":
@@ -135,7 +135,7 @@ public class Game {
 
         this.board = new Board(width, height);
         output.println("World created with size " + width + "x" + height + ".");
-        this.board.printBoard();
+        this.board.printBoard(output);
     }
 
     private void showHeroes() {

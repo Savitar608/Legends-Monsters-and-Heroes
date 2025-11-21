@@ -1,5 +1,7 @@
 package com.legends.model;
 
+import com.legends.io.Output;
+
 public abstract class Spell extends Item {
     protected int damage;
     protected int manaCost;
@@ -24,6 +26,6 @@ public abstract class Spell extends Item {
         return duration;
     }
 
-    public abstract void applyEffect(Monster target);
+    public abstract void applyEffect(Monster target, Output output);
     public abstract String getEffectDescription();
 }

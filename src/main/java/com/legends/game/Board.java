@@ -3,6 +3,7 @@ package com.legends.game;
 import com.legends.model.Entity;
 import com.legends.model.Hero;
 import com.legends.model.Monster;
+import com.legends.io.Output;
 import java.util.Random;
 
 public class Board {
@@ -53,7 +54,7 @@ public class Board {
         return null;
     }
 
-    public boolean moveEntity(int fromX, int fromY, int toX, int toY) {
+    public boolean moveEntity(int fromX, int fromY, int toX, int toY, Output output) {
         if (!isValidCoordinate(fromX, fromY) || !isValidCoordinate(toX, toY)) {
             return false;
         }
@@ -62,12 +63,12 @@ public class Board {
         Tile toTile = grid[toY][toX];
 
         if (!toTile.isAccessible()) {
-            System.out.println("Cannot move to inaccessible tile!");
+            if (output != null) output.println("Cannot move to inaccessible tile!");
             return false;
         }
 
         if (toTile.isOccupied()) {
-            System.out.println("Tile is already occupied!");
+            if (output != null) output.println("Tile is already occupied!");
             return false;
         }
 
@@ -84,24 +85,24 @@ public class Board {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 
-    public void printBoard() {
+    public void printBoard(Output output) {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 Tile tile = grid[y][x];
                 if (tile.isOccupied()) {
                     Entity entity = tile.getEntity();
                     if (entity instanceof Hero) {
-                        System.out.print("H ");
+                        output.print("H ");
                     } else if (entity instanceof Monster) {
-                        System.out.print("M ");
+                        output.print("M ");
                     } else {
-                        System.out.print("? ");
+                        output.print("? ");
                     }
                 } else {
-                    System.out.print(tile.getSymbol() + " ");
+                    output.print(tile.getSymbol() + " ");
                 }
             }
-            System.out.println();
+            output.println();
         }
     }
 }

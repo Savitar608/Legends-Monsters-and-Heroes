@@ -1,5 +1,6 @@
 package com.legends.model;
 
+import com.legends.io.Output;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,13 +47,13 @@ public abstract class Hero extends Entity {
     public int getExperience() { return experience; }
     public void setExperience(int experience) { this.experience = experience; }
 
-    public void gainExperience(int amount) {
+    public void gainExperience(int amount, Output output) {
         this.experience += amount;
         int xpNeeded = this.level * 10;
         while (this.experience >= xpNeeded) {
             this.experience -= xpNeeded;
             levelUp();
-            System.out.println(this.name + " leveled up to Level " + this.level + "!");
+            if (output != null) output.println(this.name + " leveled up to Level " + this.level + "!");
             xpNeeded = this.level * 10;
             this.hp = this.level * 100;
         }
@@ -66,13 +67,13 @@ public abstract class Hero extends Entity {
         return true;
     }
 
-    public boolean equipOffHand(Weapon weapon) {
+    public boolean equipOffHand(Weapon weapon, Output output) {
         if (weapon.getRequiredHands() == 2) {
-            System.out.println("Cannot equip 2-handed weapon in off-hand.");
+            if (output != null) output.println("Cannot equip 2-handed weapon in off-hand.");
             return false;
         }
         if (this.mainHandWeapon != null && this.mainHandWeapon.getRequiredHands() == 2) {
-            System.out.println("Cannot equip off-hand weapon while holding a 2-handed weapon.");
+            if (output != null) output.println("Cannot equip off-hand weapon while holding a 2-handed weapon.");
             return false;
         }
         this.offHandWeapon = weapon;
