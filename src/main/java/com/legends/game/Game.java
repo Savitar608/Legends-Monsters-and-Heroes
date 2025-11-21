@@ -536,6 +536,17 @@ public class Game {
         }
 
         Item item = inv.get(itemIdx);
+        
+        output.println("1. Equip/Use");
+        output.println("2. Give to another Hero");
+        output.print("Choose action: ");
+        String action = input.readLine();
+        
+        if (action.equals("2")) {
+            giveItem(hero, item);
+            return;
+        }
+
         if (item instanceof Weapon) {
             output.println("1. Equip Main Hand");
             output.println("2. Equip Off Hand");
@@ -558,5 +569,48 @@ public class Game {
         } else {
             output.println("Cannot use this item directly.");
         }
+    }
+
+    private void giveItem(Hero sourceHero, Item item) {
+        if (party.getSize() <= 1) {
+            output.println("No other heroes in party.");
+            return;
+        }
+
+        output.println("\nSelect Hero to give " + item.getName() + " to:");
+        List<Hero> targets = new ArrayList<>();
+        for (int i = 0; i < party.getSize(); i++) {
+            Hero h = party.getHero(i);
+            if (h != sourceHero) {
+                targets.add(h);
+                output.println((targets.size()) + ". " + h.getName() + " (Lvl " + h.getLevel() + ")");
+            }
+        }
+        output.println((targets.size() + 1) + ". Cancel");
+        
+        int targetIdx = -1;
+        try {
+            String in = input.readLine();
+            targetIdx = Integer.parseInt(in) - 1;
+        } catch (NumberFormatException e) {
+            output.println("Invalid input.");
+            return;
+        }
+        
+        if (targetIdx == targets.size()) return;
+        if (targetIdx < 0 || targetIdx >= targets.size()) {
+            output.println("Invalid selection.");
+            return;
+        }
+        
+        Hero targetHero = targets.get(targetIdx);
+        if (targetHero.getLevel() < item.getRequiredLevel()) {
+            output.println(targetHero.getName() + " is not high enough level to use this item (Required: " + item.getRequiredLevel() + ").");
+            return;
+        }
+        
+        sourceHero.removeItem(item);
+        targetHero.addItem(item);
+        output.println("Gave " + item.getName() + " to " + targetHero.getName() + ".");
     }
 }

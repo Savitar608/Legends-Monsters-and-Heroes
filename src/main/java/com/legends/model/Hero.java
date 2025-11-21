@@ -134,7 +134,6 @@ public abstract class Hero extends Entity {
                 this.agility += amount;
                 break;
             default:
-                // Handle other attributes or ignore
                 break;
         }
         removeItem(potion);
