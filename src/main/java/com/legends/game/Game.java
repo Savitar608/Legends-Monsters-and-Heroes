@@ -159,13 +159,16 @@ public class Game {
         while (inMarket) {
             output.println("\n--- Market Menu ---");
             output.println("1. Buy Item");
-            output.println("2. Exit Market");
+            output.println("2. Sell Item");
+            output.println("3. Exit Market");
             output.print("Choose an option: ");
             String choice = input.readLine();
             
             if (choice.equals("1")) {
                 buyItemMenu();
             } else if (choice.equals("2")) {
+                sellItemMenu();
+            } else if (choice.equals("3")) {
                 inMarket = false;
                 output.println("Exiting Market.");
             } else {
@@ -266,6 +269,71 @@ public class Game {
             hero.addItem(itemToBuy);
             output.println(hero.getName() + " bought " + itemToBuy.getName() + "!");
         }
+    }
+
+    private void sellItemMenu() {
+        // Select Hero
+        output.println("\nSelect a Hero to sell from:");
+        for (int i = 0; i < party.getSize(); i++) {
+            Hero h = party.getHero(i);
+            output.println((i + 1) + ". " + h.getName() + " (Gold: " + h.getMoney() + ")");
+        }
+        output.println((party.getSize() + 1) + ". Cancel");
+        
+        int heroIdx = -1;
+        try {
+            String in = input.readLine();
+            heroIdx = Integer.parseInt(in) - 1;
+        } catch (NumberFormatException e) {
+            output.println("Invalid input.");
+            return;
+        }
+        
+        if (heroIdx == party.getSize()) return;
+        if (heroIdx < 0 || heroIdx >= party.getSize()) {
+            output.println("Invalid hero selection.");
+            return;
+        }
+        
+        Hero hero = party.getHero(heroIdx);
+        List<Item> inventory = hero.getInventory();
+        
+        if (inventory.isEmpty()) {
+            output.println(hero.getName() + " has no items to sell.");
+            return;
+        }
+        
+        // Show Items
+        output.println("\nSelect Item to Sell:");
+        for (int i = 0; i < inventory.size(); i++) {
+            Item item = inventory.get(i);
+            int sellPrice = item.getCost() / 2;
+            output.println((i + 1) + ". " + item.getName() + " (Sell Price: " + sellPrice + ")");
+        }
+        output.println((inventory.size() + 1) + ". Cancel");
+        output.print("Choose an item: ");
+        
+        int itemIdx = -1;
+        try {
+            String in = input.readLine();
+            itemIdx = Integer.parseInt(in) - 1;
+        } catch (NumberFormatException e) {
+            output.println("Invalid input.");
+            return;
+        }
+        
+        if (itemIdx == inventory.size()) return;
+        if (itemIdx < 0 || itemIdx >= inventory.size()) {
+            output.println("Invalid item selection.");
+            return;
+        }
+        
+        Item itemToSell = inventory.get(itemIdx);
+        int sellPrice = itemToSell.getCost() / 2;
+        
+        hero.setMoney(hero.getMoney() + sellPrice);
+        hero.removeItem(itemToSell);
+        output.println(hero.getName() + " sold " + itemToSell.getName() + " for " + sellPrice + " gold.");
     }
 
     private void showInfoMenu() {
