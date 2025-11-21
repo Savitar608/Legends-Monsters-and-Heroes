@@ -112,7 +112,7 @@ public class Game {
         while (gameRunning) {
             if (board != null) board.printBoard(output);
             
-            output.print("Enter move (W/A/S/D), I for Info, H for Hero Menu, or Q to quit: ");
+            output.print("Enter move (W/A/S/D), I for Info, H for Hero Menu, M for Market, or Q to quit: ");
             String dir = input.readLine().toUpperCase();
 
             if (dir.equals("Q")) {
@@ -123,6 +123,14 @@ public class Game {
                 showInfoMenu();
             } else if (dir.equals("H")) {
                 showHeroMenu();
+            } else if (dir.equals("M")) {
+                Hero leader = party.getLeader();
+                Tile tile = board.getTileAt(leader.getX(), leader.getY());
+                if (tile instanceof MarketTile) {
+                    visitMarket();
+                } else {
+                    output.println("You are not on a market tile.");
+                }
             } else {
                 output.println("Invalid input.");
             }
@@ -148,7 +156,7 @@ public class Game {
             if (tile instanceof CommonTile) {
                 checkEncounter();
             } else if (tile instanceof MarketTile) {
-                visitMarket();
+                output.println("Party entered market space.");
             }
         }
     }
