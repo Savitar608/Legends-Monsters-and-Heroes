@@ -29,7 +29,7 @@ public abstract class Hero extends Entity {
         this.hp = this.level * 100;
     }
 
-    // TODO: Level up logic based on experience to be added here
+    // TODO: Level up logic based on experience to be added for each subclass
     public abstract void levelUp();
 
     // Getters and Setters
@@ -45,6 +45,18 @@ public abstract class Hero extends Entity {
     public void setMoney(int money) { this.money = money; }
     public int getExperience() { return experience; }
     public void setExperience(int experience) { this.experience = experience; }
+
+    public void gainExperience(int amount) {
+        this.experience += amount;
+        int xpNeeded = this.level * 10;
+        while (this.experience >= xpNeeded) {
+            this.experience -= xpNeeded;
+            levelUp();
+            System.out.println(this.name + " leveled up to Level " + this.level + "!");
+            xpNeeded = this.level * 10;
+            this.hp = this.level * 100;
+        }
+    }
     
     public boolean equipMainHand(Weapon weapon) {
         if (weapon.getRequiredHands() == 2) {
