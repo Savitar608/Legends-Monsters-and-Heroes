@@ -5,6 +5,8 @@ import com.legends.model.Hero;
 import com.legends.model.Monster;
 import com.legends.io.Output;
 import java.util.Random;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class Board {
     private int width;
@@ -19,6 +21,12 @@ public class Board {
     }
 
     private void initializeBoard() {
+        do {
+            generateRandomBoard();
+        } while (!isConnected());
+    }
+
+    private void generateRandomBoard() {
         Random rand = new Random();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
@@ -32,6 +40,54 @@ public class Board {
                 }
             }
         }
+    }
+
+    private boolean isConnected() {
+        int totalAccessible = 0;
+        int startX = -1;
+        int startY = -1;
+
+        // Count accessible tiles and find a starting point
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (grid[y][x].isAccessible()) {
+                    totalAccessible++;
+                    if (startX == -1) {
+                        startX = x;
+                        startY = y;
+                    }
+                }
+            }
+        }
+
+        if (totalAccessible == 0) return false;
+
+        // BFS to find all reachable tiles
+        boolean[][] visited = new boolean[height][width];
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{startX, startY});
+        visited[startY][startX] = true;
+        int reachableCount = 0;
+
+        int[] dx = {0, 0, 1, -1};
+        int[] dy = {1, -1, 0, 0};
+
+        while (!queue.isEmpty()) {
+            int[] curr = queue.poll();
+            reachableCount++;
+
+            for (int i = 0; i < 4; i++) {
+                int nx = curr[0] + dx[i];
+                int ny = curr[1] + dy[i];
+
+                if (isValidCoordinate(nx, ny) && !visited[ny][nx] && grid[ny][nx].isAccessible()) {
+                    visited[ny][nx] = true;
+                    queue.add(new int[]{nx, ny});
+                }
+            }
+        }
+
+        return reachableCount == totalAccessible;
     }
 
     public int getWidth() {
