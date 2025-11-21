@@ -34,6 +34,14 @@ public class Board {
         }
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     public void placeEntity(Entity entity, int x, int y) {
         if (isValidCoordinate(x, y) && grid[y][x].isAccessible()) {
             grid[y][x].setEntity(entity);
