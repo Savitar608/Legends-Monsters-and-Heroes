@@ -178,7 +178,7 @@ public class Battle {
         hero.setMana(hero.getMana() - spell.getManaCost());
         
         double spellDamage = spell.getDamage() + (hero.getDexterity() / 10000.0 * spell.getDamage());
-        // Apply simple scaling for spells (ignoring defense for now, or treating as pure damage)
+        // Apply simple scaling for spells (treating as pure damage)
         int damage = (int) (spellDamage * 0.05);
 
         target.takeDamage(damage);
@@ -222,8 +222,78 @@ public class Battle {
     }
 
     private boolean performChangeEquipment(Hero hero) {
-        // Implement equipment change logic here
-        output.println("Equipment change not fully implemented in battle yet.");
+        List<Item> equipment = new ArrayList<>();
+        for (Item i : hero.getInventory()) {
+            if (i instanceof Weapon || i instanceof Armor) {
+                equipment.add(i);
+            }
+        }
+
+        if (equipment.isEmpty()) {
+            output.println("No equipment available in inventory.");
+            return false;
+        }
+
+        output.println("Current Equipment:");
+        output.println("Main Hand: " + (hero.getMainHandWeapon() != null ? hero.getMainHandWeapon().getName() : "None"));
+        output.println("Off Hand: " + (hero.getOffHandWeapon() != null ? hero.getOffHandWeapon().getName() : "None"));
+        output.println("Armor: " + (hero.getEquippedArmor() != null ? hero.getEquippedArmor().getName() : "None"));
+
+        output.println("\nSelect Equipment to Equip:");
+        for (int i = 0; i < equipment.size(); i++) {
+            Item item = equipment.get(i);
+            String details = item.getName();
+            if (item instanceof Weapon) {
+                details += " (Dmg: " + ((Weapon)item).getDamage() + ", Hands: " + ((Weapon)item).getRequiredHands() + ")";
+            } else if (item instanceof Armor) {
+                details += " (Def: " + ((Armor)item).getDamageReduction() + ")";
+            }
+            output.println((i + 1) + ". " + details);
+        }
+        output.println((equipment.size() + 1) + ". Cancel");
+
+        int idx = -1;
+        try {
+            idx = Integer.parseInt(input.readLine()) - 1;
+        } catch (NumberFormatException e) {
+            output.println("Invalid input.");
+            return false;
+        }
+
+        if (idx < 0 || idx >= equipment.size()) return false;
+
+        Item selectedItem = equipment.get(idx);
+        if (selectedItem instanceof Weapon) {
+            Weapon weapon = (Weapon) selectedItem;
+            if (weapon.getRequiredHands() == 1) {
+                output.println("Equip to: 1. Main Hand  2. Off Hand");
+                String handChoice = input.readLine();
+                if (handChoice.equals("1")) {
+                    hero.equipMainHand(weapon);
+                    output.println("Equipped " + weapon.getName() + " to Main Hand.");
+                    return true;
+                } else if (handChoice.equals("2")) {
+                    if (hero.equipOffHand(weapon, output)) {
+                        output.println("Equipped " + weapon.getName() + " to Off Hand.");
+                        return true;
+                    }
+                    return false;
+                } else {
+                    output.println("Invalid choice.");
+                    return false;
+                }
+            } else {
+                // 2-handed
+                hero.equipMainHand(weapon);
+                output.println("Equipped " + weapon.getName() + " (2-Handed).");
+                return true;
+            }
+        } else if (selectedItem instanceof Armor) {
+            hero.equipArmor((Armor) selectedItem);
+            output.println("Equipped " + selectedItem.getName());
+            return true;
+        }
+
         return false;
     }
 
