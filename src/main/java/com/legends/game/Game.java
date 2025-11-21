@@ -17,6 +17,8 @@ public class Game {
     private boolean isRunning;
     private Input input;
     private Output output;
+    private int playerX;
+    private int playerY;
 
     public Game(Input input, Output output) {
         this.heroes = new ArrayList<>();
@@ -70,7 +72,8 @@ public class Game {
             output.println("2. Show Monsters");
             output.println("3. Show Items");
             output.println("4. Show Board");
-            output.println("5. Exit");
+            output.println("5. Move");
+            output.println("6. Exit");
             output.print("Choose an option: ");
 
             String choice = input.readLine();
@@ -90,6 +93,9 @@ public class Game {
                     else output.println("Board not initialized.");
                     break;
                 case "5":
+                    handleMove();
+                    break;
+                case "6":
                     isRunning = false;
                     output.println("Goodbye!");
                     break;
@@ -136,6 +142,35 @@ public class Game {
         this.board = new Board(width, height);
         output.println("World created with size " + width + "x" + height + ".");
         this.board.printBoard(output);
+    }
+
+    private void handleMove() {
+        if (board == null) {
+            output.println("Board not initialized.");
+            return;
+        }
+
+        output.print("Enter direction (W/A/S/D): ");
+        String dir = input.readLine().toUpperCase();
+        int newX = playerX;
+        int newY = playerY;
+
+        switch (dir) {
+            case "W": newY--; break;
+            case "S": newY++; break;
+            case "A": newX--; break;
+            case "D": newX++; break;
+            default:
+                output.println("Invalid direction.");
+                return;
+        }
+
+        if (board.moveEntity(playerX, playerY, newX, newY, output)) {
+            playerX = newX;
+            playerY = newY;
+            output.println("Moved to (" + playerX + ", " + playerY + ")");
+            board.printBoard(output);
+        }
     }
 
     private void showHeroes() {
