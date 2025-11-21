@@ -425,11 +425,13 @@ public class Game {
             }
         }
 
+        List<Hero> availableHeroes = new ArrayList<>(heroes);
+
         output.println("\n--- Choose your Heroes ---");
         for (int i = 0; i < partySize; i++) {
             output.println("Select Hero " + (i + 1) + ":");
-            for (int j = 0; j < heroes.size(); j++) {
-                Hero h = heroes.get(j);
+            for (int j = 0; j < availableHeroes.size(); j++) {
+                Hero h = availableHeroes.get(j);
                 output.println((j + 1) + ". " + h.getName() + 
                     " (Class: " + h.getHeroClass() + 
                     ", Lvl " + h.getLevel() + 
@@ -443,17 +445,17 @@ public class Game {
             }
             
             int choice = -1;
-            while (choice < 1 || choice > heroes.size()) {
+            while (choice < 1 || choice > availableHeroes.size()) {
                 output.print("Enter choice: ");
                 try {
                     String in = input.readLine();
                     choice = Integer.parseInt(in);
-                    if (choice < 1 || choice > heroes.size()) {
+                    if (choice < 1 || choice > availableHeroes.size()) {
                         output.println("Invalid choice.");
                     } else {
-                        Hero selected = heroes.get(choice - 1);
+                        Hero selected = availableHeroes.get(choice - 1);
                         party.addHero(selected);
-                        heroes.remove(choice - 1);
+                        availableHeroes.remove(choice - 1);
                         output.println(selected.getName() + " added to party.");
                     }
                 } catch (NumberFormatException e) {
