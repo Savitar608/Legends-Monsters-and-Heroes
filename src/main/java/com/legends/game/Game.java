@@ -18,6 +18,7 @@ public class Game {
     private boolean isRunning;
     private Input input;
     private Output output;
+    private boolean gameRunning;
 
     public Game(Input input, Output output) {
         this.heroes = new ArrayList<>();
@@ -107,7 +108,7 @@ public class Game {
     }
 
     private void gameLoop() {
-        boolean gameRunning = true;
+        gameRunning = true;
         while (gameRunning) {
             if (board != null) board.printBoard(output);
             
@@ -442,7 +443,7 @@ public class Game {
 
                 if (battleResult.equals("Defeat")) {
                     output.println("Your party has been defeated! Game Over.");
-                    isRunning = false;
+                    gameRunning = false;
                 }
 
                 if (battleResult.equals("Victory")) {
