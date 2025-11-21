@@ -233,7 +233,7 @@ public class Battle {
     }
 
     private void takeMonsterTurn(Monster monster) {
-        // Simple AI: Attack random alive hero
+        // AI: Attack hero with lower HP priority
         List<Hero> aliveHeroes = new ArrayList<>();
         for (Hero h : party.getHeroes()) {
             if (h.isAlive()) aliveHeroes.add(h);
@@ -241,9 +241,9 @@ public class Battle {
 
         if (aliveHeroes.isEmpty()) return;
 
-        Random rand = new Random();
-        Hero target = aliveHeroes.get(rand.nextInt(aliveHeroes.size()));
+        Hero target = selectWeightedTarget(aliveHeroes);
 
+        Random rand = new Random();
         // Dodge calculation
         if (rand.nextInt(100) < (target.getAgility() * 0.002)) { // Agility based dodge
              output.println(target.getName() + " dodged " + monster.getName() + "'s attack!");
@@ -255,6 +255,29 @@ public class Battle {
             target.takeDamage(damage);
             output.println(monster.getName() + " attacked " + target.getName() + " for " + damage + " damage.");
         }
+    }
+
+    private Hero selectWeightedTarget(List<Hero> heroes) {
+        double totalWeight = 0;
+        double[] weights = new double[heroes.size()];
+
+        for (int i = 0; i < heroes.size(); i++) {
+            // Weight is inversely proportional to HP. Adding a small epsilon to avoid division by zero
+            weights[i] = 1.0 / Math.max(1, heroes.get(i).getHp());
+            totalWeight += weights[i];
+        }
+
+        Random rand = new Random();
+        double value = rand.nextDouble() * totalWeight;
+
+        for (int i = 0; i < heroes.size(); i++) {
+            value -= weights[i];
+            if (value <= 0) {
+                return heroes.get(i);
+            }
+        }
+        
+        return heroes.get(heroes.size() - 1);
     }
 
     private boolean areAllHeroesFainted() {
