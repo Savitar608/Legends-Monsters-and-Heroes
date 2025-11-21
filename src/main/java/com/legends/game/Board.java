@@ -153,24 +153,52 @@ public class Board {
         return x >= 0 && x < width && y >= 0 && y < height;
     }
 
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_RED = "\u001B[31m";
+    private static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_BLUE = "\u001B[34m";
+
     public void printBoard(Output output) {
+        // Print top border
+        output.print("  ");
+        for (int x = 0; x < width; x++) {
+            output.print("+---");
+        }
+        output.println("+");
+
         for (int y = 0; y < height; y++) {
+            output.print(y + " "); // Row number
             for (int x = 0; x < width; x++) {
+                output.print("| ");
                 Tile tile = grid[y][x];
                 if (tile.isOccupied()) {
                     Entity entity = tile.getEntity();
                     if (entity instanceof Hero) {
-                        output.print("H ");
+                        output.print(ANSI_GREEN + "H" + ANSI_RESET + " ");
                     } else if (entity instanceof Monster) {
-                        output.print("M ");
+                        output.print(ANSI_RED + "M" + ANSI_RESET + " ");
                     } else {
                         output.print("? ");
                     }
                 } else {
-                    output.print(tile.getSymbol() + " ");
+                    if (tile instanceof MarketTile) {
+                        output.print(ANSI_YELLOW + "M" + ANSI_RESET + " ");
+                    } else if (tile instanceof InaccessibleTile) {
+                        output.print(ANSI_BLUE + "I" + ANSI_RESET + " ");
+                    } else {
+                        output.print("  "); // Empty space for common tiles looks cleaner
+                    }
                 }
             }
-            output.println();
+            output.println("|");
+            
+            // Print row separator
+            output.print("  ");
+            for (int x = 0; x < width; x++) {
+                output.print("+---");
+            }
+            output.println("+");
         }
     }
 }
