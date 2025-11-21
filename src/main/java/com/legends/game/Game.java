@@ -113,7 +113,7 @@ public class Game {
         output.println("2. Choose your party of heroes (1-3).");
         output.println("3. Move around the board using W/A/S/D.");
         output.println("4. Avoid inaccessible tiles (marked by 'I').");
-        output.println("5. Encounter monsters on common tiles. (Marked by empty spaces)");
+        output.println("5. Encounter monsters on common tiles (Marked by empty spaces).");
         output.println("6. Visit markets to buy items (marked by 'M').");
         output.println("7. Defeat monsters to level up and gain gold.");
         output.println("8. Use the Info menu to view details about your heroes, monsters, and items.");
