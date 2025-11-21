@@ -22,7 +22,7 @@ public class Battle {
         this.battleRunning = true;
     }
 
-    public void start() {
+    public String start() {
         output.println("\n--- Battle Started! ---");
         
         while (battleRunning) {
@@ -30,15 +30,15 @@ public class Battle {
             if (areAllHeroesFainted()) {
                 output.println("All heroes have fainted! Game Over.");
                 battleRunning = false;
-                // In a real game, this might trigger a respawn or end the application
-                System.exit(0); 
-                return;
+
+                // If all heroes fainted, exit the game gracefully
+                return "Game Over";
             }
             if (monsters.isEmpty()) {
                 output.println("All monsters defeated! Victory!");
                 distributeRewards();
                 battleRunning = false;
-                return;
+                return "Victory";
             }
 
             output.println("\n--- New Round ---");
@@ -64,11 +64,12 @@ public class Battle {
             // Regenerate some HP/Mana for heroes
             for (Hero h : party.getHeroes()) {
                 if (h.isAlive()) {
-                    h.setHp((int)(h.getHp() * 1.1));
-                    h.setMana((int)(h.getMana() * 1.1));
+                    h.setHp((int)(h.getHp() * 1.1)); // Regenerate 10% HP
+                    h.setMana((int)(h.getMana() * 1.1)); // Regenerate 10% Mana
                 }
             }
         }
+        return "";
     }
 
     private void showBattleStatus() {
@@ -171,12 +172,12 @@ public class Battle {
 
         hero.setMana(hero.getMana() - spell.getManaCost());
         int damage = spell.getDamage() + (hero.getDexterity() / 10000 * spell.getDamage()); // Dexterity bonus logic from spec usually
-        // For simplicity:
+        // For simplicity, using a smaller bonus for dexterity
         damage = spell.getDamage() + (hero.getDexterity() / 10); 
 
         target.takeDamage(damage);
         output.println(hero.getName() + " cast " + spell.getName() + " on " + target.getName() + " for " + damage + " damage.");
-        spell.applyEffect(target, output); // Apply side effects
+        spell.applyEffect(target, output); // Apply side effects based on spell type
     }
 
     private void performUsePotion(Hero hero) {
@@ -213,7 +214,7 @@ public class Battle {
     }
 
     private void performChangeEquipment(Hero hero) {
-        // Simplified version of inventory management for battle
+        // Implement equipment change logic here
         output.println("Equipment change not fully implemented in battle yet.");
     }
 
