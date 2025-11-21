@@ -91,10 +91,20 @@ public class Game {
     }
 
     private void startGame() {
+        resetGame();
         setupBoard();
         initializeParty();
         placeHeroesOnBoard();
         gameLoop();
+    }
+
+    private void resetGame() {
+        heroes.clear();
+        monsters.clear();
+        items.clear();
+        party = new Party();
+        board = null;
+        init();
     }
 
     private void showInstructions() {
