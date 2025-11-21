@@ -144,6 +144,11 @@ public class Battle {
             int actualDamage = calculateDamage(attack, target.getDefense());
             target.takeDamage(actualDamage);
             output.println(hero.getName() + " dealt " + actualDamage + " damage to " + target.getName());
+
+            if (!target.isAlive()) {
+                output.println(target.getName() + " has been defeated!");
+                monsters.remove(target);
+            }
         }
         return true;
     }
@@ -195,6 +200,11 @@ public class Battle {
         target.takeDamage(damage);
         output.println(hero.getName() + " cast " + spell.getName() + " on " + target.getName() + " for " + damage + " damage.");
         spell.applyEffect(target, output); // Apply side effects based on spell type
+
+        if (!target.isAlive()) {
+            output.println(target.getName() + " has been defeated!");
+            monsters.remove(target);
+        }
         return true;
     }
 
