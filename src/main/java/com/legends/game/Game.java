@@ -738,17 +738,27 @@ public class Game {
         }
 
         if (item instanceof Weapon) {
-            output.println("1. Equip Main Hand");
-            output.println("2. Equip Off Hand");
-            output.print("Choose slot: ");
-            String slot = input.readLine();
-            if (slot.equals("1")) {
-                hero.equipMainHand((Weapon) item);
-                output.println("Equipped " + item.getName() + " in Main Hand.");
-            } else if (slot.equals("2")) {
-                if (hero.equipOffHand((Weapon) item, output)) {
-                    output.println("Equipped " + item.getName() + " in Off Hand.");
+            Weapon weapon = (Weapon) item;
+            if (weapon.getRequiredHands() == 1) {
+                output.println("1. Equip Main Hand");
+                output.println("2. Equip Off Hand");
+                output.println("3. Equip Main Hand (2-Handed Grip)");
+                output.print("Choose slot: ");
+                String slot = input.readLine();
+                if (slot.equals("1")) {
+                    hero.equipMainHand(weapon, false);
+                    output.println("Equipped " + item.getName() + " in Main Hand.");
+                } else if (slot.equals("2")) {
+                    if (hero.equipOffHand(weapon, output)) {
+                        output.println("Equipped " + item.getName() + " in Off Hand.");
+                    }
+                } else if (slot.equals("3")) {
+                    hero.equipMainHand(weapon, true);
+                    output.println("Equipped " + item.getName() + " in Main Hand (2-Handed Grip).");
                 }
+            } else {
+                hero.equipMainHand(weapon);
+                output.println("Equipped " + item.getName() + " in Main Hand (2-Handed).");
             }
         } else if (item instanceof Armor) {
             hero.equipArmor((Armor) item);

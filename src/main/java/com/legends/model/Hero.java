@@ -16,6 +16,7 @@ public abstract class Hero extends Entity {
     protected Weapon offHandWeapon;
     protected Armor equippedArmor;
     protected String heroClass;
+    protected boolean isMainHandTwoHandedGrip;
 
     public Hero(String name, int mana, int strength, int agility, int dexterity, int money, int experience, String heroClass) {
         super(name, 1); // Heroes start at level 1 usually, but file has starting experience
@@ -61,11 +62,15 @@ public abstract class Hero extends Entity {
     }
     
     public boolean equipMainHand(Weapon weapon) {
+        return equipMainHand(weapon, weapon.getRequiredHands() == 2);
+    }
+
+    public boolean equipMainHand(Weapon weapon, boolean twoHandedGrip) {
         if (this.mainHandWeapon != null) {
             this.inventory.add(this.mainHandWeapon);
         }
         
-        if (weapon.getRequiredHands() == 2) {
+        if (weapon.getRequiredHands() == 2 || twoHandedGrip) {
             if (this.offHandWeapon != null) {
                 this.inventory.add(this.offHandWeapon);
                 this.offHandWeapon = null;
@@ -73,6 +78,7 @@ public abstract class Hero extends Entity {
         }
         
         this.mainHandWeapon = weapon;
+        this.isMainHandTwoHandedGrip = twoHandedGrip;
         this.inventory.remove(weapon);
         return true;
     }
@@ -82,8 +88,8 @@ public abstract class Hero extends Entity {
             if (output != null) output.println("Cannot equip 2-handed weapon in off-hand.");
             return false;
         }
-        if (this.mainHandWeapon != null && this.mainHandWeapon.getRequiredHands() == 2) {
-            if (output != null) output.println("Cannot equip off-hand weapon while holding a 2-handed weapon.");
+        if (this.mainHandWeapon != null && (this.mainHandWeapon.getRequiredHands() == 2 || this.isMainHandTwoHandedGrip)) {
+            if (output != null) output.println("Cannot equip off-hand weapon while holding a 2-handed weapon or using 2-handed grip.");
             return false;
         }
         
@@ -105,6 +111,10 @@ public abstract class Hero extends Entity {
 
     public Weapon getMainHandWeapon() {
         return mainHandWeapon;
+    }
+
+    public boolean isMainHandTwoHandedGrip() {
+        return isMainHandTwoHandedGrip;
     }
 
     public Weapon getOffHandWeapon() {
@@ -164,6 +174,9 @@ public abstract class Hero extends Entity {
     @Override
     public String toString() {
         String weaponStr = (mainHandWeapon != null ? mainHandWeapon.getName() : "None");
+        if (isMainHandTwoHandedGrip && mainHandWeapon != null && mainHandWeapon.getRequiredHands() == 1) {
+            weaponStr += " (2H Grip)";
+        }
         if (offHandWeapon != null) {
             weaponStr += " & " + offHandWeapon.getName();
         }

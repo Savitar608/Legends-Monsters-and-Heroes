@@ -138,7 +138,11 @@ public class Battle {
         // Calculate damage
         double attack = hero.getStrength();
         if (hero.getMainHandWeapon() != null) {
-            attack += hero.getMainHandWeapon().getDamage();
+            double weaponDamage = hero.getMainHandWeapon().getDamage();
+            if (hero.isMainHandTwoHandedGrip() && hero.getMainHandWeapon().getRequiredHands() == 1) {
+                weaponDamage *= 1.5; // 50% damage increase for 2-handed grip on 1-handed weapon
+            }
+            attack += weaponDamage;
         }
         
         // Apply dodge chance
@@ -327,10 +331,10 @@ public class Battle {
         if (selectedItem instanceof Weapon) {
             Weapon weapon = (Weapon) selectedItem;
             if (weapon.getRequiredHands() == 1) {
-                output.println("Equip to: 1. Main Hand  2. Off Hand");
+                output.println("Equip to: 1. Main Hand  2. Off Hand  3. Main Hand (2-Handed Grip)");
                 String handChoice = input.readLine();
                 if (handChoice.equals("1")) {
-                    hero.equipMainHand(weapon);
+                    hero.equipMainHand(weapon, false);
                     output.println("Equipped " + weapon.getName() + " to Main Hand.");
                     return true;
                 } else if (handChoice.equals("2")) {
@@ -339,6 +343,10 @@ public class Battle {
                         return true;
                     }
                     return false;
+                } else if (handChoice.equals("3")) {
+                    hero.equipMainHand(weapon, true);
+                    output.println("Equipped " + weapon.getName() + " to Main Hand (2-Handed Grip).");
+                    return true;
                 } else {
                     output.println("Invalid choice.");
                     return false;
