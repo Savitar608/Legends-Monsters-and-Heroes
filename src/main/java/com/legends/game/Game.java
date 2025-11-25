@@ -5,7 +5,7 @@ import com.legends.utils.DataLoader;
 import com.legends.io.Input;
 import com.legends.io.Output;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,15 +13,16 @@ import java.util.List;
  * The main game controller.
  * Manages the game loop, board, party, and interactions.
  */
-public class Game {
+public class Game implements Serializable {
+    private static final long serialVersionUID = 1L;
     private List<Hero> heroes;
     private Party party;
     private List<Monster> monsters;
     private List<Item> items;
     private Board board;
     private boolean isRunning;
-    private Input input;
-    private Output output;
+    private transient Input input;
+    private transient Output output;
     private boolean gameRunning;
     private String difficulty = "Normal";
 
@@ -81,7 +82,8 @@ public class Game {
                 output.println("\n--- Main Menu ---");
                 output.println("1. Start Game");
                 output.println("2. How to Play");
-                output.println("3. Quit");
+                output.println("3. Load Game");
+                output.println("4. Quit");
                 output.print("Choose an option: ");
 
                 String choice = input.readLine();
@@ -94,6 +96,9 @@ public class Game {
                         showInstructions();
                         break;
                     case "3":
+                        loadGame();
+                        break;
+                    case "4":
                         isRunning = false;
                         output.println("Goodbye!");
                         break;
@@ -178,7 +183,7 @@ public class Game {
         while (gameRunning) {
             if (board != null) board.printBoard(output);
             
-            output.print("Enter move (W/A/S/D), I for Info, H for Hero Menu, M for Market, or Q to quit: ");
+            output.print("Enter move (W/A/S/D), I for Info, H for Hero Menu, M for Market, K to Save, or Q to quit: ");
             String dir = input.readLine().toUpperCase();
 
             if (dir.equals("Q")) {
@@ -189,6 +194,8 @@ public class Game {
                 showInfoMenu();
             } else if (dir.equals("H")) {
                 showHeroMenu();
+            } else if (dir.equals("K")) {
+                saveGame();
             } else if (dir.equals("M")) {
                 Hero leader = party.getLeader();
                 Tile tile = board.getTileAt(leader.getX(), leader.getY());
@@ -900,5 +907,36 @@ public class Game {
         sourceHero.removeItem(item);
         targetHero.addItem(item);
         output.println("Gave " + item.getName() + " to " + targetHero.getName() + ".");
+    }
+
+    /**
+     * Saves the current game state to a file.
+     */
+    public void saveGame() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("savegame.ser"))) {
+            oos.writeObject(this);
+            output.println("Game saved successfully!");
+        } catch (IOException e) {
+            output.printError("Error saving game: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Loads the game state from a file.
+     */
+    public void loadGame() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("savegame.ser"))) {
+            Game loadedGame = (Game) ois.readObject();
+            this.heroes = loadedGame.heroes;
+            this.party = loadedGame.party;
+            this.monsters = loadedGame.monsters;
+            this.items = loadedGame.items;
+            this.board = loadedGame.board;
+            this.difficulty = loadedGame.difficulty;
+            output.println("Game loaded successfully!");
+            gameLoop();
+        } catch (IOException | ClassNotFoundException e) {
+            output.printError("Error loading game: " + e.getMessage());
+        }
     }
 }

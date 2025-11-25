@@ -81,14 +81,16 @@ The project includes a script to compile and run the game automatically:
 - **I**: Open Info Menu (View stats of Heroes, Monsters, Items).
 - **H**: Open Hero Menu (Equip items, use potions).
 - **M**: Enter Market (Only available on Market tiles).
+- **K**: Save Game (In-game only).
 - **Q**: Quit to Main Menu.
 - **Battle Controls**: Follow on-screen prompts to Attack, Cast Spells, Use Potions, or Change Equipment.
 
 ## Game Flow
 
 1. **Start Game**: Launch the application and select "Start Game".
-2. **Select Difficulty**: Choose between Normal (Standard) and Hard (Revive with rewards) modes.
-3. **World Setup**: Enter the desired dimensions for the game board (e.g., 8x8).
+2. **Load Game**: Select "Load Game" from the main menu to resume a saved session.
+3. **Select Difficulty**: Choose between Normal (Standard) and Hard (Revive with rewards) modes.
+4. **World Setup**: Enter the desired dimensions for the game board (e.g., 8x8).
 4. **Party Creation**: Select 1 to 3 heroes to form your party.
 5. **Exploration**: Navigate the board, avoid inaccessible areas, and find markets.
 6. **Combat**: Encounter monsters on common tiles and engage in turn-based battles.

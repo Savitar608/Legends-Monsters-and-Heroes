@@ -1,10 +1,13 @@
 package com.legends.model;
 
+import java.io.Serializable;
+
 /**
  * Abstract base class for all items in the game.
  * Items have a name, cost, and required level.
  */
-public abstract class Item {
+public abstract class Item implements Serializable {
+    private static final long serialVersionUID = 1L;
     protected String name;
     protected int cost;
     protected int requiredLevel;

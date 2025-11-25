@@ -4,6 +4,7 @@ import com.legends.model.Entity;
 import com.legends.model.Hero;
 import com.legends.model.Monster;
 import com.legends.io.Output;
+import java.io.Serializable;
 import java.util.Random;
 import java.util.Queue;
 import java.util.LinkedList;
@@ -12,7 +13,8 @@ import java.util.LinkedList;
  * Represents the game board.
  * Manages the grid of tiles and entity placement.
  */
-public class Board {
+public class Board implements Serializable {
+    private static final long serialVersionUID = 1L;
     private int width;
     private int height;
     private Tile[][] grid;

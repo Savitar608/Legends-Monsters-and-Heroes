@@ -1,12 +1,14 @@
 package com.legends.game;
 
 import com.legends.model.Entity;
+import java.io.Serializable;
 
 /**
  * Abstract base class for all tiles on the game board.
  * Manages entity placement and coordinates.
  */
-public abstract class Tile {
+public abstract class Tile implements Serializable {
+    private static final long serialVersionUID = 1L;
     protected Entity entity;
     protected int x;
     protected int y;

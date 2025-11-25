@@ -1,10 +1,13 @@
 package com.legends.model;
 
+import java.io.Serializable;
+
 /**
  * Abstract base class for all living entities in the game (Heroes and Monsters).
  * Manages common attributes like name, level, HP, and position.
  */
-public abstract class Entity {
+public abstract class Entity implements Serializable {
+    private static final long serialVersionUID = 1L;
     protected String name;
     protected int level;
     protected int hp;

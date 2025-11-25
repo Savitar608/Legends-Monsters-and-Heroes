@@ -1,5 +1,6 @@
 package com.legends.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,7 +9,8 @@ import java.util.List;
  * Represents a party of heroes.
  * Manages the list of heroes in the party.
  */
-public class Party {
+public class Party implements Serializable {
+    private static final long serialVersionUID = 1L;
     private List<Hero> heroes;
 
     /**
