@@ -17,6 +17,6 @@ public class InaccessibleTile extends Tile {
 
     @Override
     public String getSymbol() {
-        return "I";
+        return "X";
     }
 }

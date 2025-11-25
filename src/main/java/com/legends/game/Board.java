@@ -185,7 +185,7 @@ public class Board {
                     if (tile instanceof MarketTile) {
                         output.print(ANSI_YELLOW + "M" + ANSI_RESET + " ");
                     } else if (tile instanceof InaccessibleTile) {
-                        output.print(ANSI_BLUE + "I" + ANSI_RESET + " ");
+                        output.print(ANSI_BLUE + "X" + ANSI_RESET + " ");
                     } else {
                         output.print("  "); // Empty space for common tiles looks cleaner
                     }
