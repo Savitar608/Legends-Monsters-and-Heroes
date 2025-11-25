@@ -50,6 +50,11 @@ The game data is loaded from CSV files located in `src/main/resources`:
 - `Weaponry.csv`, `Armory.csv`, `Potions.csv`
 - `FireSpells.csv`, `IceSpells.csv`, `LightningSpells.csv`
 
+## Prerequisites
+
+- Java Development Kit (JDK) 8 or higher.
+- A terminal or command prompt.
+
 ## How to Run
 
 ### Using the Helper Script (Recommended)
@@ -62,15 +67,32 @@ The project includes a script to compile and run the game automatically:
 ### Manual Compilation
 1. Compile the project:
    ```bash
-   mkdir -p bin
-   javac -d bin -sourcepath src/main/java src/main/java/com/legends/Main.java
-   cp -r src/main/resources/* bin/
+   ./run.sh
    ```
 
 2. Run the game:
    ```bash
    java -cp bin com.legends.Main
    ```
+
+## Controls
+
+- **W/A/S/D**: Move Up/Left/Down/Right.
+- **I**: Open Info Menu (View stats of Heroes, Monsters, Items).
+- **H**: Open Hero Menu (Equip items, use potions).
+- **M**: Enter Market (Only available on Market tiles).
+- **Q**: Quit to Main Menu.
+- **Battle Controls**: Follow on-screen prompts to Attack, Cast Spells, Use Potions, or Change Equipment.
+
+## Game Flow
+
+1. **Start Game**: Launch the application and select "Start Game".
+2. **Select Difficulty**: Choose between Normal (Standard) and Hard (Revive with rewards) modes.
+3. **World Setup**: Enter the desired dimensions for the game board (e.g., 8x8).
+4. **Party Creation**: Select 1 to 3 heroes to form your party.
+5. **Exploration**: Navigate the board, avoid inaccessible areas, and find markets.
+6. **Combat**: Encounter monsters on common tiles and engage in turn-based battles.
+7. **Progression**: Defeat monsters to gain XP and Gold. Level up to increase stats and buy better gear at markets.
 
 ## Design Principles
 - **Object-Oriented Design**: Uses inheritance, polymorphism, encapsulation, and abstraction.
