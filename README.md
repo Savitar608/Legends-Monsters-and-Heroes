@@ -30,7 +30,16 @@ The project is organized into the following packages:
   - **Dual Wielding**: Heroes can equip two one-handed weapons.
   - **Spell Effects**: Fire (reduces defense), Ice (reduces damage), Lightning (reduces dodge chance).
   - **Dynamic World**: Configurable board size with randomized terrain.
-- **IO Abstraction**: Decoupled input/output logic for better testability.
+  - **Difficulty Modes**:
+    - **Normal**: Standard challenge. Game Over on defeat.
+    - **Hard**: Monsters have increased stats. Heroes are revived and rewarded even after defeat, allowing for continuous progression.
+  - **Enhanced Battle System**:
+    - **Support Actions**: Heroes can use potions on teammates.
+    - **Smart Targeting**: Automatically selects targets when only one option exists.
+    - **Balanced Magic**: Spells are scaled to be consistent with HP and Level stats.
+- **User Interface**:
+  - **Colored Output**: Battle logs use Green (Positive) and Red (Negative) colors for better feedback.
+  - **IO Abstraction**: Decoupled input/output logic for better testability.
 
 ## Data Files
 
