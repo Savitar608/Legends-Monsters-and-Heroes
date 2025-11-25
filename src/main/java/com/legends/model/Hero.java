@@ -54,7 +54,7 @@ public abstract class Hero extends Entity {
         while (this.experience >= xpNeeded) {
             this.experience -= xpNeeded;
             levelUp();
-            if (output != null) output.println(this.name + " leveled up to Level " + this.level + "!");
+            if (output != null) output.printlnGreen(this.name + " leveled up to Level " + this.level + "!");
             xpNeeded = this.level * 10;
             this.hp = this.level * 100;
         }

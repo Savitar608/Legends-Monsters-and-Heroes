@@ -39,14 +39,14 @@ public class Battle {
         while (battleRunning) {
             // Check win/loss conditions
             if (areAllHeroesFainted()) {
-                output.println("All heroes have fainted! Game Over.");
+                output.printlnRed("All heroes have fainted! Game Over.");
                 battleRunning = false;
 
                 // If all heroes fainted, exit the game gracefully
                 return "Defeat";
             }
             if (monsters.isEmpty()) {
-                output.println("All monsters defeated! Victory!");
+                output.printlnGreen("All monsters defeated! Victory!");
                 distributeRewards();
                 battleRunning = false;
                 return "Victory";
@@ -147,14 +147,14 @@ public class Battle {
         if (effectiveDodgeChance < 0) effectiveDodgeChance = 0;
 
         if (rand.nextDouble() < effectiveDodgeChance) {
-            output.println(target.getName() + " dodged the attack!");
+            output.printlnRed(target.getName() + " dodged the attack!");
         } else {
             int actualDamage = calculateDamage(attack, target.getDefense());
             target.takeDamage(actualDamage);
-            output.println(hero.getName() + " dealt " + actualDamage + " damage to " + target.getName());
+            output.printlnGreen(hero.getName() + " dealt " + actualDamage + " damage to " + target.getName());
 
             if (!target.isAlive()) {
-                output.println(target.getName() + " has been defeated!");
+                output.printlnGreen(target.getName() + " has been defeated!");
                 monsters.remove(target);
             }
         }
@@ -192,7 +192,7 @@ public class Battle {
 
         Spell spell = spells.get(idx);
         if (hero.getMana() < spell.getManaCost()) {
-            output.println("Not enough mana!");
+            output.printlnRed("Not enough mana!");
             return false;
         }
 
@@ -206,11 +206,11 @@ public class Battle {
         int damage = (int) (spellDamage * 0.05);
 
         target.takeDamage(damage);
-        output.println(hero.getName() + " cast " + spell.getName() + " on " + target.getName() + " for " + damage + " damage.");
+        output.printlnGreen(hero.getName() + " cast " + spell.getName() + " on " + target.getName() + " for " + damage + " damage.");
         spell.applyEffect(target, output); // Apply side effects based on spell type
 
         if (!target.isAlive()) {
-            output.println(target.getName() + " has been defeated!");
+            output.printlnGreen(target.getName() + " has been defeated!");
             monsters.remove(target);
         }
         return true;
@@ -251,7 +251,7 @@ public class Battle {
 
         target.applyPotion(potion);
         hero.removeItem(potion);
-        output.println(hero.getName() + " used " + potion.getName() + " on " + target.getName());
+        output.printlnGreen(hero.getName() + " used " + potion.getName() + " on " + target.getName());
         return true;
     }
 
@@ -379,7 +379,7 @@ public class Battle {
         // Dodge calculation
         // PDF mentions 0.002, but I changed to 0.01 for better gameplay balance
         if (rand.nextInt(100) < (target.getAgility() * 0.01)) { // Agility based dodge
-             output.println(target.getName() + " dodged " + monster.getName() + "'s attack!");
+             output.printlnGreen(target.getName() + " dodged " + monster.getName() + "'s attack!");
         } else {
             double attack = monster.getDamage();
             double defense = 0;
@@ -390,7 +390,7 @@ public class Battle {
             int damage = calculateDamage(attack, defense);
             
             target.takeDamage(damage);
-            output.println(monster.getName() + " attacked " + target.getName() + " for " + damage + " damage.");
+            output.printlnRed(monster.getName() + " attacked " + target.getName() + " for " + damage + " damage.");
         }
     }
 
@@ -440,11 +440,11 @@ public class Battle {
             if (h.isAlive()) {
                 h.setMoney(h.getMoney() + totalGold);
                 h.gainExperience(totalXp, output);
-                output.println(h.getName() + " gained " + totalGold + " gold and " + totalXp + " XP.");
+                output.printlnGreen(h.getName() + " gained " + totalGold + " gold and " + totalXp + " XP.");
             } else {
                 // Revive fainted heroes with 50% HP
                 h.setHp(h.getLevel() * 50); 
-                output.println(h.getName() + " has been revived with " + h.getHp() + " HP.");
+                output.printlnGreen(h.getName() + " has been revived with " + h.getHp() + " HP.");
             }
         }
     }
