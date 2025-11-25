@@ -1,6 +1,7 @@
 package com.legends.io;
 
 import java.util.Scanner;
+import com.legends.game.QuitGameException;
 
 public class ConsoleInput implements Input {
     private Scanner scanner;
@@ -11,6 +12,10 @@ public class ConsoleInput implements Input {
 
     @Override
     public String readLine() {
-        return scanner.nextLine();
+        String line = scanner.nextLine();
+        if (line != null && line.trim().equalsIgnoreCase("q")) {
+            throw new QuitGameException("Player quit the game.");
+        }
+        return line;
     }
 }

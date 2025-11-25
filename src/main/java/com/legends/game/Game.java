@@ -65,27 +65,31 @@ public class Game {
         output.println("Welcome to Legends: Monsters and Heroes!");
         
         while (isRunning) {
-            output.println("\n--- Main Menu ---");
-            output.println("1. Start Game");
-            output.println("2. How to Play");
-            output.println("3. Quit");
-            output.print("Choose an option: ");
+            try {
+                output.println("\n--- Main Menu ---");
+                output.println("1. Start Game");
+                output.println("2. How to Play");
+                output.println("3. Quit");
+                output.print("Choose an option: ");
 
-            String choice = input.readLine();
+                String choice = input.readLine();
 
-            switch (choice) {
-                case "1":
-                    startGame();
-                    break;
-                case "2":
-                    showInstructions();
-                    break;
-                case "3":
-                    isRunning = false;
-                    output.println("Goodbye!");
-                    break;
-                default:
-                    output.println("Invalid option.");
+                switch (choice) {
+                    case "1":
+                        startGame();
+                        break;
+                    case "2":
+                        showInstructions();
+                        break;
+                    case "3":
+                        isRunning = false;
+                        output.println("Goodbye!");
+                        break;
+                    default:
+                        output.println("Invalid option.");
+                }
+            } catch (QuitGameException e) {
+                output.println("\nReturning to Main Menu...");
             }
         }
     }
