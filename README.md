@@ -28,6 +28,7 @@ The project is organized into the following packages:
 - **Gameplay Mechanics**:
   - **Leveling System**: Heroes gain XP and level up, increasing stats.
   - **Dual Wielding**: Heroes can equip two one-handed weapons.
+  - **Two-Handed Grip**: Heroes can choose to wield a one-handed weapon with both hands for a 50% damage increase.
   - **Spell Effects**: Fire (reduces defense), Ice (reduces damage), Lightning (reduces dodge chance).
   - **Dynamic World**: Configurable board size with randomized terrain.
   - **Difficulty Modes**:
