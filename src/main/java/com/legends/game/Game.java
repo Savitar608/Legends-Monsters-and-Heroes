@@ -19,6 +19,7 @@ public class Game {
     private Input input;
     private Output output;
     private boolean gameRunning;
+    private String difficulty = "Normal";
 
     public Game(Input input, Output output) {
         this.heroes = new ArrayList<>();
@@ -95,11 +96,27 @@ public class Game {
     }
 
     private void startGame() {
+        selectDifficulty();
         resetGame();
         setupBoard();
         initializeParty();
         placeHeroesOnBoard();
         gameLoop();
+    }
+
+    private void selectDifficulty() {
+        output.println("\nSelect Difficulty:");
+        output.println("1. Normal (Standard gameplay, Game Over on defeat)");
+        output.println("2. Hard (Stronger monsters, Continue on defeat with rewards)");
+        output.print("Choose difficulty: ");
+        String choice = input.readLine();
+        if (choice.equals("2")) {
+            difficulty = "Hard";
+            output.println("Difficulty set to Hard.");
+        } else {
+            difficulty = "Normal";
+            output.println("Difficulty set to Normal.");
+        }
     }
 
     private void resetGame() {
@@ -124,6 +141,7 @@ public class Game {
         output.println("9. Use the Hero menu to manage your heroes.");
         output.println("10. Use the Market menu to buy and sell items when on a market tile.");
         output.println("11. Press 'Q' at any time to return to the Main Menu.");
+        output.println("12. Choose between Normal and Hard difficulty. Hard mode has stronger monsters but allows continuing after defeat with rewards.");
         output.println("Enjoy your adventure!");
     }
 
@@ -548,18 +566,38 @@ public class Game {
             }
             
             if (!battleMonsters.isEmpty()) {
-                Battle battle = new Battle(party, battleMonsters, input, output);
+                Battle battle = new Battle(party, battleMonsters, input, output, difficulty);
                 String battleResult = battle.start();
 
                 if (battleResult.equals("Defeat")) {
-                    output.println("Your party has been defeated! Game Over.");
-                    gameRunning = false;
+                    if (difficulty.equals("Hard")) {
+                        output.println("Hard Mode: Heroes revived and rewarded for their bravery!");
+                        reviveHeroes();
+                        giveGoldForLoss();
+                    } else {
+                        output.println("Your party has been defeated! Game Over.");
+                        gameRunning = false;
+                    }
                 }
 
                 if (battleResult.equals("Victory")) {
                     output.println("You won the battle!");
                 }
             }
+        }
+    }
+
+    private void reviveHeroes() {
+        for (int i = 0; i < party.getSize(); i++) {
+            Hero h = party.getHero(i);
+            h.setHp(h.getLevel() * 50);
+        }
+    }
+
+    private void giveGoldForLoss() {
+        for (int i = 0; i < party.getSize(); i++) {
+            Hero h = party.getHero(i);
+            h.setMoney(h.getMoney() + 100 * h.getLevel());
         }
     }
 

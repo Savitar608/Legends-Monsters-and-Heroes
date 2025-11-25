@@ -15,16 +15,23 @@ public class Battle {
     private Input input;
     private Output output;
     private boolean battleRunning;
+    private String difficulty;
 
-    public Battle(Party party, List<Monster> monsters, Input input, Output output) {
+    public Battle(Party party, List<Monster> monsters, Input input, Output output, String difficulty) {
         this.party = party;
         this.monsters = monsters;
+        this.difficulty = difficulty;
         this.initialMonsterCount = monsters.size();
         
         this.maxMonsterLevel = 0;
         for (Monster m : monsters) {
             if (m.getLevel() > maxMonsterLevel) {
                 maxMonsterLevel = m.getLevel();
+            }
+            if (difficulty.equals("Hard")) {
+                m.setDamage((int)(m.getDamage() * 1.2));
+                m.setDefense((int)(m.getDefense() * 1.2));
+                m.setHp((int)(m.getHp() * 1.2));
             }
         }
 
