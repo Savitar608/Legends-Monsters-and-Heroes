@@ -20,7 +20,7 @@ public class DataLoader {
                 if (line.trim().isEmpty()) continue;
                 String[] parts = line.trim().split(",");
                 String name = parts[0].trim();
-                int mana = Integer.parseInt(parts[1].trim());
+                int mana = Integer.parseInt(parts[1].trim()) / 3;
                 int strength = Integer.parseInt(parts[2].trim());
                 int agility = Integer.parseInt(parts[3].trim());
                 int dexterity = Integer.parseInt(parts[4].trim());
@@ -119,6 +119,9 @@ public class DataLoader {
                 int level = Integer.parseInt(parts[2].trim());
                 int attributeIncrease = Integer.parseInt(parts[3].trim());
                 String attributeAffected = parts[4].trim();
+                if (attributeAffected.equals("Mana")) {
+                    attributeIncrease /= 3;
+                }
                 potions.add(new Potion(name, cost, level, attributeIncrease, attributeAffected));
             }
         }
@@ -138,7 +141,7 @@ public class DataLoader {
                 int cost = Integer.parseInt(parts[1].trim());
                 int level = Integer.parseInt(parts[2].trim());
                 int damage = Integer.parseInt(parts[3].trim());
-                int manaCost = Integer.parseInt(parts[4].trim());
+                int manaCost = Integer.parseInt(parts[4].trim()) / 3;
 
                 if (type.equals("Fire")) {
                     spells.add(new FireSpell(name, cost, level, damage, manaCost));
