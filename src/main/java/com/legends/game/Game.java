@@ -123,6 +123,7 @@ public class Game {
         output.println("8. Use the Info menu to view details about your heroes, monsters, and items.");
         output.println("9. Use the Hero menu to manage your heroes.");
         output.println("10. Use the Market menu to buy and sell items when on a market tile.");
+        output.println("11. Press 'Q' at any time to return to the Main Menu.");
         output.println("Enjoy your adventure!");
     }
 
