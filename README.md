@@ -28,9 +28,22 @@ The project is organized into the following packages:
 - **Gameplay Mechanics**:
   - **Leveling System**: Heroes gain XP and level up, increasing stats.
   - **Dual Wielding**: Heroes can equip two one-handed weapons.
+  - **Two-Handed Grip**: Heroes can choose to wield a one-handed weapon with both hands for a 50% damage increase.
   - **Spell Effects**: Fire (reduces defense), Ice (reduces damage), Lightning (reduces dodge chance).
   - **Dynamic World**: Configurable board size with randomized terrain.
-- **IO Abstraction**: Decoupled input/output logic for better testability.
+  - **Difficulty Modes**:
+    - **Normal**: Standard challenge. Game Over on defeat.
+    - **Hard**: Monsters have increased stats. Heroes are revived and rewarded even after defeat, allowing for continuous progression.
+  - **Enhanced Battle System**:
+    - **Support Actions**: Heroes can use potions on teammates.
+    - **Smart Targeting**: Automatically selects targets when only one option exists.
+    - **Balanced Magic**: Spells are scaled to be consistent with HP and Level stats.
+- **User Interface**:
+  - **Colored Output**: Battle logs use Green (Positive) and Red (Negative) colors for better feedback.
+  - **IO Abstraction**: Decoupled input/output logic for better testability.
+- **Save/Load System**:
+  - **Persistence**: Save your game progress at any time during exploration.
+  - **Management**: Load previous saves or delete them directly from the main menu.
 
 ## Data Files
 
@@ -39,6 +52,11 @@ The game data is loaded from CSV files located in `src/main/resources`:
 - `Spirits.csv`, `Dragons.csv`, `Exoskeletons.csv`
 - `Weaponry.csv`, `Armory.csv`, `Potions.csv`
 - `FireSpells.csv`, `IceSpells.csv`, `LightningSpells.csv`
+
+## Prerequisites
+
+- Java Development Kit (JDK) 8 or higher.
+- A terminal or command prompt.
 
 ## How to Run
 
@@ -53,7 +71,7 @@ The project includes a script to compile and run the game automatically:
 1. Compile the project:
    ```bash
    mkdir -p bin
-   javac -d bin -sourcepath src/main/java src/main/java/com/legends/Main.java
+   find src -name "*.java" | xargs javac -d bin
    cp -r src/main/resources/* bin/
    ```
 
@@ -61,6 +79,28 @@ The project includes a script to compile and run the game automatically:
    ```bash
    java -cp bin com.legends.Main
    ```
+
+## Controls
+
+- **W/A/S/D**: Move Up/Left/Down/Right.
+- **I**: Open Info Menu (View stats of Heroes, Monsters, Items).
+- **H**: Open Hero Menu (Equip items, use potions).
+- **M**: Enter Market (Only available on Market tiles).
+- **K**: Save Game (In-game only).
+- **Q**: Quit to Main Menu.
+- **Battle Controls**: Follow on-screen prompts to Attack, Cast Spells, Use Potions, or Change Equipment.
+
+## Game Flow
+
+1. **Start New Game**: Launch the application and select "Start New Game".
+2. **Load Game**: Select "Load Game" to resume a saved session.
+3. **Delete Saved Game**: Select "Delete Saved Game" to remove an existing save file.
+4. **Select Difficulty**: Choose between Normal (Standard) and Hard (Revive with rewards) modes.
+5. **World Setup**: Enter the desired dimensions for the game board (e.g., 8x8).
+6. **Party Creation**: Select 1 to 3 heroes to form your party.
+7. **Exploration**: Navigate the board, avoid inaccessible areas, and find markets.
+8. **Combat**: Encounter monsters on common tiles and engage in turn-based battles.
+9. **Progression**: Defeat monsters to gain XP and Gold. Level up to increase stats and buy better gear at markets.
 
 ## Design Principles
 - **Object-Oriented Design**: Uses inheritance, polymorphism, encapsulation, and abstraction.
