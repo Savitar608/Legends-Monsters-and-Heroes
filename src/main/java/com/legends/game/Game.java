@@ -504,7 +504,6 @@ public class Game implements Serializable {
         }
 
         this.board = new Board(size, size);
-        output.println("World created with size " + size + "x" + size + ".");
     }
 
     /**
