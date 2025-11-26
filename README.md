@@ -41,6 +41,9 @@ The project is organized into the following packages:
 - **User Interface**:
   - **Colored Output**: Battle logs use Green (Positive) and Red (Negative) colors for better feedback.
   - **IO Abstraction**: Decoupled input/output logic for better testability.
+- **Save/Load System**:
+  - **Persistence**: Save your game progress at any time during exploration.
+  - **Management**: Load previous saves or delete them directly from the main menu.
 
 ## Data Files
 
@@ -83,6 +86,7 @@ The project includes a script to compile and run the game automatically:
 - **I**: Open Info Menu (View stats of Heroes, Monsters, Items).
 - **H**: Open Hero Menu (Equip items, use potions).
 - **M**: Enter Market (Only available on Market tiles).
+- **K**: Save Game (In-game only).
 - **Q**: Quit to Main Menu.
 - **Battle Controls**: Follow on-screen prompts to Attack, Cast Spells, Use Potions, or Change Equipment.
 
@@ -90,12 +94,13 @@ The project includes a script to compile and run the game automatically:
 
 1. **Start New Game**: Launch the application and select "Start New Game".
 2. **Load Game**: Select "Load Game" to resume a saved session.
-3. **Select Difficulty**: Choose between Normal (Standard) and Hard (Revive with rewards) modes.
-3. **World Setup**: Enter the desired dimensions for the game board (e.g., 8x8).
-4. **Party Creation**: Select 1 to 3 heroes to form your party.
-5. **Exploration**: Navigate the board, avoid inaccessible areas, and find markets.
-6. **Combat**: Encounter monsters on common tiles and engage in turn-based battles.
-7. **Progression**: Defeat monsters to gain XP and Gold. Level up to increase stats and buy better gear at markets.
+3. **Delete Saved Game**: Select "Delete Saved Game" to remove an existing save file.
+4. **Select Difficulty**: Choose between Normal (Standard) and Hard (Revive with rewards) modes.
+5. **World Setup**: Enter the desired dimensions for the game board (e.g., 8x8).
+6. **Party Creation**: Select 1 to 3 heroes to form your party.
+7. **Exploration**: Navigate the board, avoid inaccessible areas, and find markets.
+8. **Combat**: Encounter monsters on common tiles and engage in turn-based battles.
+9. **Progression**: Defeat monsters to gain XP and Gold. Level up to increase stats and buy better gear at markets.
 
 ## Design Principles
 - **Object-Oriented Design**: Uses inheritance, polymorphism, encapsulation, and abstraction.
